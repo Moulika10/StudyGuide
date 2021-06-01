@@ -1,0 +1,181 @@
+
+Variables:
+
+Variables with var are scoped with the function
+Variables with let keyword are scoped with block
+Variables with const are also block scoped
+
+diff between let and const
+const x = 1;
+x=2;
+Syntax 'x' is read only
+variable with const cannot be reassigned
+
+use let only when we need to reassign variable
+
+Going forward only use let keyword
+---------------------------------------
+Objects:
+
+Objects in JavaScript are collection of Key value pairs
+if we have a function inside of an object we refer to that function as a method
+const person = {
+name : 'Moulika',
+walk : function() {}
+};
+
+walk is a method in person object. in newer version we can eliminate function keyword and write it as
+const person = {
+name : 'Moulika',
+walk() {},
+talk() {}
+};
+2 ways to access the access the members of the Objects
+Dot Notation person.talk();
+Bracket Notation person['name'] = 'Bandi';
+We use the bracket notation when we don't know ahead of time what property and or method we are going to access.
+-------------------------
+this:
+
+this is a keyword is JS which always returns reference to a current object. the value of this is determined by how a
+function is called.
+If it is called by a method in an object then it will always returns reference to that object.
+const person = {
+name : 'Moulika',
+walk() {
+console.log(this);
+}
+};
+Example : person.walk();
+
+if we call the function as a standalone object it will return a global object a window object in browser.
+walk();
+we get undefined.
+--------------------------------------
+Binding this:
+
+In JS functions are objects --> person.walk.bind()
+bind() method:
+with bind method we can set the value of 'this' method permanently. So when we call bind on a function we get a new function
+and in that function the value of this is based on the argument that we pass to that bind method.
+ const walk = person.walk.bind(person);
+walk();
+----------------------------------
+
+Arrow Functions:
+
+const square = function(number) {
+return number * number;
+}
+Arrow function
+step 1: get rid of the function keyword
+const square = (number) {
+return number * number;
+}
+step 2: put a arrow between parenthesis and body of the function
+const square = (number) => {
+return number * number;
+}
+step 3: If we have only single parameter than we can exclude parenthesis
+const square = number => {
+return number * number;
+}
+
+ if we have zero parameters then add empty parenthesis
+ const square = ()) => {
+ return number * number;
+ }
+ step4: if the body of our function includes only a single line and returns a value
+ we can get rid of the return keyword as well as the curly braces.
+ const square = number =>  number * number;
+
+ Usages of the arrow functions:
+
+ const jobs = [
+ {id:1, isActive:true},
+ {id:2, isActive:true},
+ {id:3, isActive:false},
+ ];
+
+we can use filter method to filter the objects to true jobs which are active in the above exaple
+const activeJobs = jobs.filter(function(job) {return job.isActive;});
+we can rewrite with arrow functions as below
+const activeJobs = jobs.filter(job =>job.isActive);
+
+arrow function dont rebind this
+const person = {
+walk() {
+setTimeout(function() {
+  console.log("this", this);
+    },1000);
+  }
+};
+person.walk(); ==> it returns a window object instead of the reference to the person object because of the callback
+function.
+so in the old days we used to declare var that or var self = this;
+
+const person = {
+walk() {
+var self = this;
+setTimeout(function() {
+  console.log("self", self);
+    },1000);
+  }
+};
+person.walk(); now we get a reference object
+But in arrow function we need not do this because in arrow function we dont rebind 'this'
+const person = {
+walk() {
+setTimeout(() => {
+  console.log("this", this);
+    },1000);
+  }
+};
+now we get a reference the person object.
+----------------------------------------------------------------
+Array.map():
+when ever we want to render a list of items thats when we use a map method of arrays.
+const colors =['red','green','blue'];
+//old way
+const items = colors.map(function(color) {
+return '<li>'+color+'</li>';
+});
+//new way
+const items = colors.map(color => '<li>'+color+'</li>');
+//use template literals in Es6
+instead of single or double quotes use backtick character ``
+const items = colors.map(color => `<li>${color}</li>`);
+console.log(items);
+--------------------------------------------------------
+Object Destructuring:
+const address  = {
+street:'',
+city: '',
+country:''
+};
+const street = address.street;
+const city = address.city;
+const country = address.country;
+
+object Destructuring -->
+const {street, city, country} =address;
+
+if we want to call it as st instead of street then we use alias
+const{street:st} = address;
+--------------------------------------------------------------
+spread Operator:
+const first = [1,2,3];
+const second =[4,5,6];
+
+//oldway
+const combined = first.concat(second);
+//new way
+const combine = [...first, 'a', ...second, 'b'];
+
+const clone = [..first];
+we can also combine the objects instead of arrays.
+const first = {name: "Moulika"};
+const second = {job : "developer"};
+const combine = {...first , ...second, location : "Australia"};
+console.log(combined);
+----------------------------
